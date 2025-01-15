@@ -24,8 +24,10 @@ public class OrderUpdateValidator implements CommonServiceValidator {
         var id = dto.getId();
         var estado = dto.getEstado();
 
-        store.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Producto no encontrado con id " + id));
+        var entity = store.findById(id);
+
+        if (entity.isEmpty())
+            throw new ObjectNotFoundException("Registro de orden no encontrado con id " + id);
 
         if (StringUtils.isNotEmpty(estado) && !validaCadena(estado))
             throw new InvalidObjectException("Estado invalido.");
