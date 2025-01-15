@@ -49,10 +49,10 @@ public class OrderController {
     private OrderDTO buildSaveDto(OrderRequest request) {
         return new OrderDTO(
                 null,
-                request.getConcepto(),
+                truncate(request.getConcepto()),
                 request.getCantidadProductos(),
-                request.getNombreOrdenante(),
-                request.getNombreBeneficiario(),
+                truncate(request.getNombreOrdenante()),
+                truncate(request.getNombreBeneficiario()),
                 request.getMonto(),
                 request.getEstado().toUpperCase()
         );
@@ -60,6 +60,13 @@ public class OrderController {
 
     private OrderDTO buildUpdateDto(int orderId, String estado) {
         return new OrderDTO(orderId, estado.toUpperCase());
+    }
+
+    private String truncate(String value) {
+        if (value == null) {
+            return null;
+        }
+        return value.length() > 40 ? value.substring(0, 40) : value;
     }
 
 }
